@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "packages": {
+    "@fullview/types": {
+      "signature": "beea64b65d371fa7096f071860cfeddc",
+      "file": true
+    },
+    "@fullview/errors": {
+      "signature": "4cefe3a61a1a1f65d96470a10235f0f6",
+      "file": true,
+      "replaced": "^0.3.50"
+    }
+  }
+}

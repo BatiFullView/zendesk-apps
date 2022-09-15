@@ -1,47 +1,70 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import zafClient from "@app/zendesk/sdk";
+import { Row, Col } from "@zendeskgarden/react-grid";
+import { Spinner } from "@zendeskgarden/react-loaders";
+import { useEffect, useState } from "react";
+import {
+  Authorization,
+  Cobrowse,
+  CobrowseInvite,
+  SessionReplays,
+} from "./components";
+import { useZendeskContext } from "./contexts/ZendeskContextProvider";
+import { useAppStatus } from "./hooks";
 
 function App() {
-  const [assignee, setAssignee] = React.useState("");
+  const { customer, agent, appType, subdomain } = useZendeskContext();
+  const { loading, appStatus } = useAppStatus({
+    agent,
+    appType,
+    subdomain,
+  });
+  const [invitationId, setInvitationId] = useState("");
 
-  const setTicketAssignee = async () => {
-    const { ticket } = await zafClient.get("ticket");
-    setAssignee(ticket.assignee.user.name || "Someone awesome!");
-  };
-
-  React.useEffect(() => {
-    setTicketAssignee();
+  useEffect(() => {
+    zafClient.invoke("resize", { width: "100%" });
   }, []);
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello {assignee}!</p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {" | "}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  );
+  const organisationId = appStatus?.organisationId;
+  const showSessionReplays =
+    organisationId && (customer?.email || customer?.externalId);
+  const showCobrowse = customer?.email || customer?.externalId || invitationId;
+
+  if (loading) {
+    return (
+      <Row>
+        <Col textAlign="center">
+          <Spinner size="38" />
+        </Col>
+      </Row>
+    );
+  }
+
+  if (!appStatus?.isAuthorized) {
+    return <Authorization {...appStatus} />;
+  }
+
+  if (showCobrowse) {
+    return (
+      <>
+        <Cobrowse invitationId={invitationId} />
+
+        {showSessionReplays && (
+          <SessionReplays organisationId={organisationId} />
+        )}
+      </>
+    );
+  }
+
+  if (organisationId) {
+    return (
+      <CobrowseInvite
+        organisationId={organisationId}
+        setInvitationId={setInvitationId}
+      />
+    );
+  }
+
+  return <div>Nothing to display</div>;
 }
 
 export default App;

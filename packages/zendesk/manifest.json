@@ -1,24 +1,38 @@
 {
-  "name": "Vite Boilerplate",
+  "name": "Fullview",
   "author": {
-    "name": "OlegGulevskyy",
-    "email": "oleggulevskyy@gmail.com",
-    "url": "https://github.com/OlegGulevskyy/zendesk-vite-boilerplate"
+    "name": "Fullview",
+    "email": "bati@fullview.io"
   },
   "defaultLocale": "en",
-  "private": true,
+  "private": false,
   "location": {
     "support": {
       "ticket_sidebar": {
         "url": "assets/index.html",
+        "flexible": true,
         "size": {
-          "height": "500px",
-          "width": "340px"
-        },
-        "flexible": true
+          "height": "350px"
+        }
       }
-    }
+    },
+    "chat": {
+			"chat_sidebar": {
+				"url": "assets/ticket_sidebar/index.html",
+				"flexible": true,
+				"size": {
+					"height": "350px"
+				}
+			}
+		}
   },
+  "parameters": [
+    {
+      "name": "subdomain",
+      "type": "text",
+      "required": true
+    }
+  ],
   "version": "1.0.0",
   "frameworkVersion": "2.0"
 }

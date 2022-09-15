@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "@fullview/errors": {
+      "signature": "8d90730bfad8334df167d92fe7b33cac",
+      "file": true
+    }
+  }
+}

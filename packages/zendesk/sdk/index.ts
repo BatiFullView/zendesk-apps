@@ -8,23 +8,35 @@ interface IMetadata<T> {
   plan: {
     name: string;
   };
-	settings?: T
+  settings?: T;
+}
+
+interface IContext {
+  host: string;
+  product: string;
+  location: string;
+  instanceGuid: string;
+  account: {
+    subdomain: string;
+  };
 }
 
 interface IClient {
-  invoke: (cmd: string, arg: any) => void;
+  invoke: (cmd: string, arg: any) => Promise<void>;
   get: (getter: string) => any;
-  metadata: <U>() => IMetadata<U>;
+  metadata: <U>() => Promise<IMetadata<U>>;
   request: <U>(data: Object) => Promise<U>;
+  set: <U>(field: string, value: any) => Promise<any>;
   on: (eventName: string, listener: (...args: any) => any) => void;
+  context(): Promise<IContext>;
 }
 
 declare global {
-	interface Window {
-		ZAFClient: {
-			init: () => IClient
-		}
-	}
+  interface Window {
+    ZAFClient: {
+      init: () => IClient;
+    };
+  }
 }
 
 let zafClient: IClient;

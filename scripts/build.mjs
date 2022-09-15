@@ -8,9 +8,22 @@ const {
 // list of applications to build
 const restArgsStr = restArgs.join(" ");
 
+let mode = "production";
+
+switch (env) {
+  case "stage":
+    mode = "staging";
+    break;
+  case "prod":
+    mode = "production";
+    break;
+  default:
+    mode = "development";
+}
+
 run({
   pkg: "@app/zendesk",
-  cmd: `ENV=${env} APPS='${restArgsStr}' yarn build`,
+  cmd: `ENV=${env} MODE=${mode} APPS='${restArgsStr}' yarn build`,
   cwd: "packages/zendesk",
 });
 
@@ -33,7 +46,7 @@ if (env !== "local") {
     if (!allowedApps.includes(appLocation)) {
       console.error(
         `Unknown app location.
-				Check package.json for list of arguments supplied to build script. 
+				Check package.json for list of arguments supplied to build script.
 				See allowedApps for list of allowed apps`
       );
 
@@ -42,7 +55,7 @@ if (env !== "local") {
 
     run({
       pkg: `@app/${appLocation}`,
-      cmd: `ADDON_TYPE=${appLocation} yarn build`,
+      cmd: `ADDON_TYPE=${appLocation} yarn build --mode ${mode}`,
       cwd: `packages/${appLocation}`,
     });
   }
