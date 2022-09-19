@@ -26,13 +26,6 @@
 			}
 		}
   },
-  "parameters": [
-    {
-      "name": "subdomain",
-      "type": "text",
-      "required": true
-    }
-  ],
   "version": "1.0.0",
   "frameworkVersion": "2.0"
 }

@@ -1,5 +1,4 @@
 import { Anchor, Button } from "@zendeskgarden/react-buttons";
-import { DEFAULT_THEME } from "@zendeskgarden/react-theming";
 import { Row, Col } from "@zendeskgarden/react-grid";
 import styled from "styled-components";
 import { useZendeskContext } from "../contexts/ZendeskContextProvider";
@@ -45,7 +44,7 @@ export const Cobrowse = (props: CobrowseProps) => {
         <Col textAlign="center">
           <Anchor href={`${APP_URL}/dashboard${queryString}`} target="_blank">
             <CobrowseButton size="small" isPrimary>
-              Co-browse with fullview
+              Co-browse with Fullview
             </CobrowseButton>
           </Anchor>
         </Col>
