@@ -26,8 +26,6 @@ export const ZendeskContextProvider = ({
 
   const getAppData = async (): Promise<AppState> => {
     const context = await zafClient.context();
-    const metadata = await zafClient.metadata();
-    const settings = metadata.settings as Settings;
     const appType = context.location as AppType;
     const zafAppService = new ZafService(appType);
     const agent: ZendeskAgent = (await zafClient.get("currentUser"))
@@ -37,7 +35,7 @@ export const ZendeskContextProvider = ({
       appType,
       agent,
       zafService: zafAppService,
-      subdomain: settings.subdomain,
+      subdomain: context.account.subdomain,
       customer: await zafAppService.getCustomerData(),
       appContextData: await zafAppService.getAppContextData(),
     };
